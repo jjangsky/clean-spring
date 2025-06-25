@@ -24,7 +24,7 @@ class MemberTest {
                 return encode(password).equals(passwordHash);
             }
         };
-        member = Member.create("jjangsky@github.io", "youchan", "secret", passwordEncoder);
+        member = Member.create(new MemberCreateRequest("jjangsky@github.io", "youchan", "secret"), passwordEncoder);
     }
 
     @Test
@@ -106,4 +106,17 @@ class MemberTest {
 
         assertThat(passwordEncoder.encode("vertsecret")).isEqualTo("vertsecret");
     }
+
+    @Test
+    void isActive() {
+        // 회원 내부 상태의 변화를 외부의 코드로 체크하지 말자 -> 중복 가능성이 높고 결국에는 응집도가 높아짐
+        // -> getter로 꺼내서 외부에서 비교 하는 것이 아닌 객체 내부에서 비교
+        assertThat(member.isActive()).isFalse();
+
+        member.activate();
+        assertThat(member.isActive()).isTrue();
+
+        member.deactivate();
+        assertThat(member.isActive()).isFalse();
+        }
 }

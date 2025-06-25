@@ -1,4 +1,5 @@
 package com.jjangsky.splearn.domain;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -15,18 +16,22 @@ public class Member {
     private String passwordHash;
     private MemberStatus status;
 
-    // 생성자 자체는 접근을 차단하고 정적 팩토리 메소드를 통해서만 접근할 수 있도록
-    private Member(String email, String nickname, String passwordHash) {
-        this.email = Objects.requireNonNull(email); // 값이 null 이 들어오면 npe 발생
-        this.nickname = Objects.requireNonNull(nickname);
-        this.passwordHash = Objects.requireNonNull(passwordHash);
+    private Member() {
 
-        this.status = MemberStatus.PENDING;
     }
 
-    // 의존성 주입이 일어나서 정적 팩토리 메소드로 수정
-    public static Member create(String email, String nickname, String password, PasswordEncoder passwordEncoder) {
-        return new Member(email, nickname, passwordEncoder.encode(password));
+    // 생성자 자체는 접근을 차단하고 정적 팩토리 메소드를 통해서만 접근할 수 있도록
+    @Builder
+    public static Member create (MemberCreateRequest createRequest, PasswordEncoder passwordEncoder) {
+        Member member = new Member();
+
+        member.email = Objects.requireNonNull(createRequest.email()); // 값이 null 이 들어오면 npe 발생
+        member.nickname = Objects.requireNonNull(createRequest.nickname());
+        member.passwordHash = Objects.requireNonNull(passwordEncoder.encode(createRequest.password()));
+
+        member.status = MemberStatus.PENDING;
+
+        return member;
     }
 
     public void activate() {
@@ -53,10 +58,14 @@ public class Member {
     }
 
     public void changeNickname(String nickname) {
-        this.nickname = nickname;
+        this.nickname = Objects.requireNonNull(nickname);
     }
 
     public void changePassword(String password, PasswordEncoder passwordEncoder) {
-        this.passwordHash = passwordEncoder.encode(password);
+        this.passwordHash = passwordEncoder.encode(Objects.requireNonNull(password));
+    }
+
+    public boolean isActive() {
+        return  this.status == MemberStatus.ACTIVE;
     }
 }

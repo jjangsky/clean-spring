@@ -1,6 +1,6 @@
 package com.jjangsky.splearn.domain;
 
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,22 +8,33 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 class MemberTest {
+    Member member;
+    PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    void setUp() {
+        this.passwordEncoder = new PasswordEncoder() {
+            @Override
+            public String encode(String password) {
+                return "";
+            }
+
+            @Override
+            public boolean matches(String password, String passwordHash) {
+                return encode(password).equals(passwordHash);
+            }
+        };
+        member = Member.create("jjangsky@github.io", "youchan", "secret", passwordEncoder);
+    }
+
     @Test
     void createMember() {
-        var member = new Member("jjangsky@github.io", "youchan", "secret");
+
         assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
     }
 
     @Test
-    void constructorNullCheck() {
-        assertThatThrownBy(() -> new Member(null, "Toby", "secret"))
-                .isInstanceOf(NullPointerException.class);
-    }
-
-    @Test
     void activate() {
-        var member = new Member("jjangsky@github.io", "youchan", "secret");
-
         member.activate();
 
         assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
@@ -35,8 +46,6 @@ class MemberTest {
          * 이미 활성화 된 회원에 대해서 다시 활성화를 시키는 경우에 대해서 대처하는 테스트 코드
          * 무의미하지 않겠냐? -> 추후 버그 가능성 농후
          */
-        var member = new Member("jjangsky@github.io", "youchan", "secret");
-
         member.activate();
 
         assertThatThrownBy(() -> {
@@ -46,8 +55,6 @@ class MemberTest {
 
     @Test
     void deactivate() {
-        var member = new Member("jjangsky@github.io", "youchan", "secret");
-
         member.activate();
         member.deactivate();
 
@@ -56,8 +63,6 @@ class MemberTest {
 
     @Test
     void deactivateFail() {
-        var member = new Member("jjangsky@github.io", "youchan", "secret");
-
         assertThatThrownBy(() -> {
             member.deactivate();
         }).isInstanceOf(IllegalStateException.class);
@@ -79,4 +84,26 @@ class MemberTest {
      *     보통 테스트 코드는 한번 작성하고 다시 안보는데 굳이 작성해야하나?
      *     -> 실패한 Case에 대해서만 재확인 해도 되며 복합적으로 복잡한 Case 에만 추가해도 됨
      */
+
+    @Test
+    void verifyPassword() {
+        assertThat(member.verifyPassword("secret", passwordEncoder)).isTrue();
+        assertThat(member.verifyPassword("hello", passwordEncoder)).isFalse();
+    }
+
+    @Test
+    void changeNickname() {
+        assertThat(member.getNickname()).isEqualTo("jjangsky");
+
+        member.changeNickname("horokskyy");
+
+        assertThat(member.getNickname()).isEqualTo("horokskyy");
+    }
+
+    @Test
+    void changePassword() {
+        member.changePassword("vertsecret", passwordEncoder);
+
+        assertThat(passwordEncoder.encode("vertsecret")).isEqualTo("vertsecret");
+    }
 }

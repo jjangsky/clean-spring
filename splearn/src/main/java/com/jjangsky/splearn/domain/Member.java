@@ -1,24 +1,29 @@
 package com.jjangsky.splearn.domain;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Objects;
 
 import static org.springframework.util.Assert.*;
 
+@Entity
 @Getter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자의 보호 레벨을 최소 protected로 설저
 public class Member {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     // email 필드에 대해서 VO 로 변환
+    @Embedded
     private Email email;
     private String nickname;
     private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    private Member() {
-
-    }
 
     // 생성자 자체는 접근을 차단하고 정적 팩토리 메소드를 통해서만 접근할 수 있도록
     @Builder

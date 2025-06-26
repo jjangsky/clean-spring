@@ -3,6 +3,8 @@ package com.jjangsky.splearn.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.jjangsky.splearn.domain.MemberFixture.createMemberRegisterRequest;
+import static com.jjangsky.splearn.domain.MemberFixture.createPasswordEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -13,18 +15,8 @@ class MemberTest {
 
     @BeforeEach
     void setUp() {
-        this.passwordEncoder = new PasswordEncoder() {
-            @Override
-            public String encode(String password) {
-                return "";
-            }
-
-            @Override
-            public boolean matches(String password, String passwordHash) {
-                return encode(password).equals(passwordHash);
-            }
-        };
-        member = Member.register(new MemberRegisterRequest("jjangsky@github.io", "youchan", "secret"), passwordEncoder);
+        this.passwordEncoder = createPasswordEncoder();
+        member = Member.register(createMemberRegisterRequest(), passwordEncoder);
     }
 
     @Test
@@ -102,9 +94,8 @@ class MemberTest {
 
     @Test
     void changePassword() {
-        member.changePassword("vertsecret", passwordEncoder);
-
-        assertThat(passwordEncoder.encode("vertsecret")).isEqualTo("vertsecret");
+        member.changePassword("verysecret", passwordEncoder);
+        assertThat(passwordEncoder.encode("verysecret")).isEqualTo("verysecret");
     }
 
     @Test
@@ -123,10 +114,10 @@ class MemberTest {
     @Test
     void invalidEmail() {
         assertThatThrownBy(() -> {
-            Member.register(new MemberRegisterRequest("invalid email", "jjangsky", "secret"), passwordEncoder);
+            Member.register(createMemberRegisterRequest("invalid email"), passwordEncoder);
         }).isInstanceOf(IllegalArgumentException.class);
 
-        Member.register(new MemberRegisterRequest("jjangsky@github.io", "youchan", "secret"), passwordEncoder);
+        Member.register(createMemberRegisterRequest(), passwordEncoder);
     }
 
 }

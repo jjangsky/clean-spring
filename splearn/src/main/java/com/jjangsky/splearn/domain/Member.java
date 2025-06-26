@@ -5,13 +5,15 @@ import lombok.ToString;
 
 import javax.swing.*;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static org.springframework.util.Assert.*;
 
 @Getter
 @ToString
 public class Member {
-    private String email;
+    // email 필드에 대해서 VO 로 변환
+    private Email email;
     private String nickname;
     private String passwordHash;
     private MemberStatus status;
@@ -25,7 +27,7 @@ public class Member {
     public static Member create (MemberCreateRequest createRequest, PasswordEncoder passwordEncoder) {
         Member member = new Member();
 
-        member.email = Objects.requireNonNull(createRequest.email()); // 값이 null 이 들어오면 npe 발생
+        member.email = new Email(Objects.requireNonNull(createRequest.email())); // 값이 null 이 들어오면 npe 발생
         member.nickname = Objects.requireNonNull(createRequest.nickname());
         member.passwordHash = Objects.requireNonNull(passwordEncoder.encode(createRequest.password()));
 

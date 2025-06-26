@@ -24,11 +24,11 @@ class MemberTest {
                 return encode(password).equals(passwordHash);
             }
         };
-        member = Member.create(new MemberCreateRequest("jjangsky@github.io", "youchan", "secret"), passwordEncoder);
+        member = Member.register(new MemberRegisterRequest("jjangsky@github.io", "youchan", "secret"), passwordEncoder);
     }
 
     @Test
-    void createMember() {
+    void registerMember() {
 
         assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
     }
@@ -123,10 +123,10 @@ class MemberTest {
     @Test
     void invalidEmail() {
         assertThatThrownBy(() -> {
-            Member.create(new MemberCreateRequest("invalid email", "jjangsky", "secret"), passwordEncoder);
+            Member.register(new MemberRegisterRequest("invalid email", "jjangsky", "secret"), passwordEncoder);
         }).isInstanceOf(IllegalArgumentException.class);
 
-        Member.create(new MemberCreateRequest("jjangsky@github.io", "youchan", "secret"), passwordEncoder);
+        Member.register(new MemberRegisterRequest("jjangsky@github.io", "youchan", "secret"), passwordEncoder);
     }
 
 }

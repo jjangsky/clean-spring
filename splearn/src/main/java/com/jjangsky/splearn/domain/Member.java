@@ -3,9 +3,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.swing.*;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import static org.springframework.util.Assert.*;
 
@@ -24,7 +22,7 @@ public class Member {
 
     // 생성자 자체는 접근을 차단하고 정적 팩토리 메소드를 통해서만 접근할 수 있도록
     @Builder
-    public static Member create (MemberCreateRequest createRequest, PasswordEncoder passwordEncoder) {
+    public static Member register(MemberRegisterRequest createRequest, PasswordEncoder passwordEncoder) {
         Member member = new Member();
 
         member.email = new Email(Objects.requireNonNull(createRequest.email())); // 값이 null 이 들어오면 npe 발생

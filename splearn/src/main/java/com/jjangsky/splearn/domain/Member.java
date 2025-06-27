@@ -1,6 +1,8 @@
 package com.jjangsky.splearn.domain;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import java.util.Objects;
 
@@ -10,6 +12,7 @@ import static org.springframework.util.Assert.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자의 보호 레벨을 최소 protected로 설저
+@NaturalIdCache // 영속성 컨텍스트에서 캐싱하는건 Id 기준이지만 해당 어노테이션 사용하면 NaturalId로도 영속성 컨텍스트에 캐싱이 가능하다.
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +20,7 @@ public class Member {
 
     // email 필드에 대해서 VO 로 변환
     @Embedded
+    @NaturalId   // 비즈니스 적으로 의미가 있는 필드에 적용
     private Email email;
     private String nickname;
     private String passwordHash;

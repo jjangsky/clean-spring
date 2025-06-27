@@ -5,10 +5,12 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import static com.jjangsky.splearn.domain.MemberFixture.createMemberRegisterRequest;
 import static com.jjangsky.splearn.domain.MemberFixture.createPasswordEncoder;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
 @DataJpaTest
@@ -33,6 +35,13 @@ class MemberRepositoryTest{
         entityManager.flush();
     }
 
+    @Test
+    void duplicateEmailFail() {
+        Member member = Member.register(createMemberRegisterRequest(), createPasswordEncoder());
+        memberRepository.save(member);
 
+        Member member2 = Member.register(createMemberRegisterRequest(), createPasswordEncoder());
+        assertThatThrownBy(()-> memberRepository.save(member2)).isInstanceOf(DataIntegrityViolationException.class);
 
+    }
 }

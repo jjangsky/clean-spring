@@ -13,13 +13,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SequencedCollection;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
-class MemberRegisterTest {
+class MemberRegisterManualTest {
     /**
      * 테스트를 작성할때는 인터페이스를 기준으로 테스트를 진행해야 된다.
      *
@@ -76,6 +76,11 @@ class MemberRegisterTest {
              */
             ReflectionTestUtils.setField(member, "id", 1);
             return member;
+        }
+
+        @Override
+        public Optional<Member> findByEmail(Email email) {
+            return Optional.empty();
         }
     }
 

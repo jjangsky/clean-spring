@@ -3,9 +3,7 @@ package com.jjangsky.splearn.application;
 import com.jjangsky.splearn.application.provided.MemberRegister;
 import com.jjangsky.splearn.application.required.EmailSender;
 import com.jjangsky.splearn.application.required.MemberRepository;
-import com.jjangsky.splearn.domain.Member;
-import com.jjangsky.splearn.domain.MemberRegisterRequest;
-import com.jjangsky.splearn.domain.PasswordEncoder;
+import com.jjangsky.splearn.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -42,12 +40,27 @@ public class MemberService implements MemberRegister {
     @Override
     public Member register(MemberRegisterRequest registerRequest) {
         // check - 현재 시스템의 상태, 파리미터에서 넘어오는 정보
+
+        // 코드 읽는 것에 대해 불편함이 존재하여 메소드 내부 추상화 레벨을 맞춤
+        checkDuplicateEmail(registerRequest);
+
         Member member = Member.register(registerRequest, passwordEncoder);
 
         memberRepository.save(member);
 
-        emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요");
+        // 어떤 제목과 어떤 내용을 보낸다는 것을 디테일한 내용이라 추상화 레벨을 맞춤
+        sendWelcomeEmail(member);
 
         return member;
+    }
+
+    private void sendWelcomeEmail(Member member) {
+        emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요");
+    }
+
+    private void checkDuplicateEmail(MemberRegisterRequest registerRequest) {
+        if (memberRepository.findByEmail(new Email(registerRequest.email())).isPresent()) {
+            throw new DuplicateEmailException("이미 사용중인 이메일 입니다.");
+        }
     }
 }

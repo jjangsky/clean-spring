@@ -1,5 +1,6 @@
 package com.jjangsky.splearn.application;
 
+import com.jjangsky.splearn.application.provided.MemberFinder;
 import com.jjangsky.splearn.application.provided.MemberRegister;
 import com.jjangsky.splearn.application.required.EmailSender;
 import com.jjangsky.splearn.application.required.MemberRepository;
@@ -22,7 +23,7 @@ import org.springframework.validation.annotation.Validated;
 @Transactional // AOP 기술을 활용하여 메소드가 시작 전 트랜잭션 시작하고, 종료 후 마무리함
 @RequiredArgsConstructor
 @Validated // -> 트랜잭션과 비슷하여 시작 전 파라미터 정보 확인 처리
-public class MemberService implements MemberRegister {
+public class MemberModifyService implements MemberRegister {
 
     /**
      * 필드를 사용할 때 변경할 일이 없으므로 final을 생성한다.
@@ -30,6 +31,7 @@ public class MemberService implements MemberRegister {
      * final 때문에 멤머 서비스에 오브젝트가 만들어지는 시점에 반드시 초기화가 필요 -> 컴파일 에러 발생
      * (해당 필드를 주입하지 않았을 때 미리 코드 레벨 단계에서 알 수 있음)
      */
+    private final MemberFinder memberFinder;
     private final MemberRepository memberRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
@@ -70,6 +72,19 @@ public class MemberService implements MemberRegister {
         sendWelcomeEmail(member);
 
         return member;
+    }
+
+    @Override
+    public Member activate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+        /**
+         * 자신의 포트에서 memberFinder 사용중이니 가져와서 구현 처리
+         * Member member = memberRepository.findById(memberId)
+         *                 .orElseThrow(() -> new IllegalArgumentException("Invalid member id: " + memberId));
+         */
+        member.activate();
+
+        return memberRepository.save(member);
     }
 
     private void sendWelcomeEmail(Member member) {

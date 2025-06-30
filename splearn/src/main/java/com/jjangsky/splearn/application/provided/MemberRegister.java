@@ -15,4 +15,8 @@ public interface MemberRegister {
      *  -> 도메인 레이어에서 만들어지는 엔티티는 괜찮음
      */
     Member register(@Valid MemberRegisterRequest registerRequest);
+
+    Member activate(Long memberId);
+
+
 }

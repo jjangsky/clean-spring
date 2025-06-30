@@ -3,6 +3,7 @@ package com.jjangsky.splearn.application.provided;
 import com.jjangsky.splearn.SplearnTestConfiguration;
 import com.jjangsky.splearn.domain.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -34,5 +35,17 @@ record MemberRegisterTests(MemberRegister memberRegister) {
 
         assertThatThrownBy(() -> memberRegister.register(MemberFixture.createMemberRegisterRequest()))
                 .isInstanceOf(DuplicateEmailException.class);
+    }
+
+    @Test
+    void setMemberRegisterRequestFail() {
+        extracted(new MemberRegisterRequest("test@splearn.app", "Toby", "secret"));
+        extracted(new MemberRegisterRequest("test@splearn.app", "jjangsky_test_12341234123", "secret"));
+        extracted(new MemberRegisterRequest("test.app", "jjangsky", "secret"));
+    }
+
+    private void extracted(MemberRegisterRequest invalid) {
+        assertThatThrownBy(() -> memberRegister.register(invalid))
+                .isInstanceOf(ConstraintViolationException.class);
     }
 }

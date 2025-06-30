@@ -4,8 +4,11 @@ import com.jjangsky.splearn.application.provided.MemberRegister;
 import com.jjangsky.splearn.application.required.EmailSender;
 import com.jjangsky.splearn.application.required.MemberRepository;
 import com.jjangsky.splearn.domain.*;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * 회원 관련 작업이 진행할 수록 provided interface가 점점 증가한다.
@@ -16,7 +19,9 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
+@Transactional // AOP 기술을 활용하여 메소드가 시작 전 트랜잭션 시작하고, 종료 후 마무리함
 @RequiredArgsConstructor
+@Validated // -> 트랜잭션과 비슷하여 시작 전 파라미터 정보 확인 처리
 public class MemberService implements MemberRegister {
 
     /**
@@ -38,8 +43,21 @@ public class MemberService implements MemberRegister {
      */
 
     @Override
-    public Member register(MemberRegisterRequest registerRequest) {
+    public Member register(@Valid MemberRegisterRequest registerRequest) {
         // check - 현재 시스템의 상태, 파리미터에서 넘어오는 정보
+
+
+        /**
+         * 검증에 대한 고찰
+         *
+         * 하나의 API 요청을 수행 하면서 여러 계층을 거치고 그 계층을 건널 때 마다
+         * 사용자로 부터 받아온 파라미터에 대한 검증을 처리할 수 있는 부분들이 존재한다.
+         * 이건 주로 어디서 해야 할까? -> 서비스 로직에서 하는게 좋다.
+         * 보통 서비스 넘어오기 직전에 `@Valid` 를 사용해서 처리함
+         *
+         * 도메인 내부에서도 검증을 할 수 있지만 최소한의 검증을 하는 것이 좋음
+         */
+
 
         // 코드 읽는 것에 대해 불편함이 존재하여 메소드 내부 추상화 레벨을 맞춤
         checkDuplicateEmail(registerRequest);

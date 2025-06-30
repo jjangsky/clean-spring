@@ -94,8 +94,8 @@ class MemberTest {
 
     @Test
     void changePassword() {
-        member.changePassword("verysecret", passwordEncoder);
-        assertThat(passwordEncoder.encode("verysecret")).isEqualTo("verysecret");
+        member.changePassword("verysecret2", passwordEncoder);
+        assertThat(member.verifyPassword("verysecret2", passwordEncoder)).isTrue();
     }
 
     @Test

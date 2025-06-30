@@ -2,11 +2,11 @@ package com.jjangsky.splearn.application.provided;
 
 import com.jjangsky.splearn.SplearnTestConfiguration;
 import com.jjangsky.splearn.domain.*;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 @Transactional
 @Import(SplearnTestConfiguration.class)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-public record MemberRegisterTests(MemberRegister memberRegister) {
+record MemberRegisterTests(MemberRegister memberRegister) {
 
     @Test
     void register() {

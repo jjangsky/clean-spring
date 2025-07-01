@@ -3,7 +3,7 @@ package com.jjangsky.splearn.domain;
 public class MemberFixture {
 
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
-        return new MemberRegisterRequest(email, "jjangsky", "secret");
+        return new MemberRegisterRequest(email, "jjangsky", "secret1234");
     }
 
     public static MemberRegisterRequest createMemberRegisterRequest() {

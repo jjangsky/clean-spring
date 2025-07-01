@@ -53,12 +53,12 @@ record MemberRegisterTests(MemberRegister memberRegister, EntityManager entityMa
 
     @Test
     void setMemberRegisterRequestFail() {
-        extracted(new MemberRegisterRequest("test@splearn.app", "Toby", "secret"));
-        extracted(new MemberRegisterRequest("test@splearn.app", "jjangsky_test_12341234123", "secret"));
-        extracted(new MemberRegisterRequest("test.app", "jjangsky", "secret"));
+        checkValidation(new MemberRegisterRequest("test@splearn.app", "Toby", "secret"));
+        checkValidation(new MemberRegisterRequest("test@splearn.app", "jjangsky_test_12341234123", "secret"));
+        checkValidation(new MemberRegisterRequest("test.app", "jjangsky", "secret"));
     }
 
-    private void extracted(MemberRegisterRequest invalid) {
+    private void checkValidation(MemberRegisterRequest invalid) {
         assertThatThrownBy(() -> memberRegister.register(invalid))
                 .isInstanceOf(ConstraintViolationException.class);
     }

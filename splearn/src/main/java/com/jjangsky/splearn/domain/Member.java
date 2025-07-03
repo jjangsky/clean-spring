@@ -42,6 +42,9 @@ public class Member extends AbstractEntity {
 //    @Column(length = 20, nullable = false)
     private MemberStatus status;
 
+    @OneToOne
+    private MemberDetail detail;
+
 
     // 생성자 자체는 접근을 차단하고 정적 팩토리 메소드를 통해서만 접근할 수 있도록
     @Builder

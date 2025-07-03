@@ -9,23 +9,37 @@ import java.util.Objects;
 import static org.springframework.util.Assert.*;
 
 @Entity
+//@Table(name = "members", uniqueConstraints = {
+//        @UniqueConstraint(name = "UK_MEMBER_EMAIL_ADDRESS", columnNames = "email_address")
+//})
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자의 보호 레벨을 최소 protected로 설저
 @NaturalIdCache // 영속성 컨텍스트에서 캐싱하는건 Id 기준이지만 해당 어노테이션 사용하면 NaturalId로도 영속성 컨텍스트에 캐싱이 가능하다.
-public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Member extends AbstractEntity {
+
+    /**
+     * 도메인 객체와 엔티티 객체를 하나로 사용하는 Tip
+     *
+     * 엔티티 객체로 사용하게 되면 관련 어노테이션들이 너무 많아서 코드를 읽는데 방해가 됨.
+     * 설정에 관한 어노테이션(`@Table`, `@Column`, `@Enumerated` 등)들은 별도의 XML로 분리하여 적용할 수 있음
+     * (XML 설정을 사용하면 도메인 객체와 엔티티 객체를 분리할 수 있으며, XML 파일이 어노테이션 설정을 오버라이드 한다.)
+     * 단, 도메인 모델 관점에서 의미 있는 설정(ManyToOne 과 같은 관계, natural id 등)은 남겨 놓아야 한다.
+     */
 
     // email 필드에 대해서 VO 로 변환
-    @Embedded
+//    @Embedded
     @NaturalId   // 비즈니스 적으로 의미가 있는 필드에 적용
     private Email email;
+
+//    @Column(length = 100, nullable = false)
     private String nickname;
+
+//    @Column(length = 200, nullable = false)
     private String passwordHash;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
+//    @Column(length = 20, nullable = false)
     private MemberStatus status;
 
 

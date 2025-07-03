@@ -19,6 +19,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 record MemberRegisterTests(MemberRegister memberRegister, EntityManager entityManager) {
 
+    /**
+     * 왜 레코드 클래스에 오류가 생기는가? -> `@Transactional` 어노테이션이 레코드 클래스에 적용되지 않기 때문
+     * 트랜잭셔널 어노테이션 자체가 서브 클래스를 만들어서 상속 기능을 사용하는 방식인데 record 같은 경우 불변객체라서
+     * 상속할 수 없음 -> 상속 할 수 없는 클래스에 트랜잭셔널을 붙여 놨네?
+     *
+     * 하지만, 여기서 사용되는 트랜잭셔널은 AOP로 트랜잭션을 코드에 적용해주는 것이 아닌 테스팅 프로엠워크와 결합해서
+     * 테스트 메소드가 실행 되기 전에 이벤트 메소드를 통해 초기화 해주는 역할이기 때문에 문제가 없음
+     */
+
     @Test
     void register() {
         // SplearnTestConfiguration 테스트 의존성 주입 과정이 필요함

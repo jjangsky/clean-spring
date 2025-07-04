@@ -1,6 +1,6 @@
-package com.jjangsky.splearn.application.required;
+package com.jjangsky.splearn.application.member.required;
 
-import com.jjangsky.splearn.domain.Email;
+import com.jjangsky.splearn.domain.shared.Email;
 
 /**
  * 이메일을 발송한다.

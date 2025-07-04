@@ -1,8 +1,8 @@
-package com.jjangsky.splearn.application.required;
+package com.jjangsky.splearn.application.member.required;
 
 
-import com.jjangsky.splearn.domain.Email;
-import com.jjangsky.splearn.domain.Member;
+import com.jjangsky.splearn.domain.shared.Email;
+import com.jjangsky.splearn.domain.member.Member;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;

@@ -1,6 +1,5 @@
-package com.jjangsky.splearn.domain;
+package com.jjangsky.splearn.domain.shared;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.util.regex.Pattern;

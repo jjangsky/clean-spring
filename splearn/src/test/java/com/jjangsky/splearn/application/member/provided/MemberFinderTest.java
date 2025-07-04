@@ -1,8 +1,8 @@
-package com.jjangsky.splearn.application.provided;
+package com.jjangsky.splearn.application.member.provided;
 
 import com.jjangsky.splearn.SplearnTestConfiguration;
-import com.jjangsky.splearn.domain.Member;
-import com.jjangsky.splearn.domain.MemberFixture;
+import com.jjangsky.splearn.domain.member.Member;
+import com.jjangsky.splearn.domain.member.MemberFixture;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;

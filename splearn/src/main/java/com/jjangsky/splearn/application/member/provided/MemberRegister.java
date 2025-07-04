@@ -1,7 +1,7 @@
-package com.jjangsky.splearn.application.provided;
+package com.jjangsky.splearn.application.member.provided;
 
-import com.jjangsky.splearn.domain.Member;
-import com.jjangsky.splearn.domain.MemberRegisterRequest;
+import com.jjangsky.splearn.domain.member.Member;
+import com.jjangsky.splearn.domain.member.MemberRegisterRequest;
 import jakarta.validation.Valid;
 
 /**

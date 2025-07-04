@@ -1,9 +1,9 @@
 package com.jjangsky.splearn;
 
-import com.jjangsky.splearn.application.required.EmailSender;
-import com.jjangsky.splearn.domain.Email;
-import com.jjangsky.splearn.domain.MemberFixture;
-import com.jjangsky.splearn.domain.PasswordEncoder;
+import com.jjangsky.splearn.application.member.required.EmailSender;
+import com.jjangsky.splearn.domain.shared.Email;
+import com.jjangsky.splearn.domain.member.MemberFixture;
+import com.jjangsky.splearn.domain.member.PasswordEncoder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 

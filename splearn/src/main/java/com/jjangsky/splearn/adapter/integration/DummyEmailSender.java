@@ -1,7 +1,7 @@
 package com.jjangsky.splearn.adapter.integration;
 
-import com.jjangsky.splearn.application.required.EmailSender;
-import com.jjangsky.splearn.domain.Email;
+import com.jjangsky.splearn.application.member.required.EmailSender;
+import com.jjangsky.splearn.domain.shared.Email;
 import org.springframework.context.annotation.Fallback;
 import org.springframework.stereotype.Component;
 

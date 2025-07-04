@@ -1,4 +1,4 @@
-package com.jjangsky.splearn.domain;
+package com.jjangsky.splearn.domain.member;
 
 public interface PasswordEncoder {
     String encode(String password);

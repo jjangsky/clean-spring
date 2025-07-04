@@ -1,10 +1,14 @@
-package com.jjangsky.splearn.application;
+package com.jjangsky.splearn.application.member;
 
-import com.jjangsky.splearn.application.provided.MemberFinder;
-import com.jjangsky.splearn.application.provided.MemberRegister;
-import com.jjangsky.splearn.application.required.EmailSender;
-import com.jjangsky.splearn.application.required.MemberRepository;
-import com.jjangsky.splearn.domain.*;
+import com.jjangsky.splearn.application.member.provided.MemberFinder;
+import com.jjangsky.splearn.application.member.provided.MemberRegister;
+import com.jjangsky.splearn.application.member.required.EmailSender;
+import com.jjangsky.splearn.application.member.required.MemberRepository;
+import com.jjangsky.splearn.domain.member.DuplicateEmailException;
+import com.jjangsky.splearn.domain.member.Member;
+import com.jjangsky.splearn.domain.member.MemberRegisterRequest;
+import com.jjangsky.splearn.domain.member.PasswordEncoder;
+import com.jjangsky.splearn.domain.shared.Email;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

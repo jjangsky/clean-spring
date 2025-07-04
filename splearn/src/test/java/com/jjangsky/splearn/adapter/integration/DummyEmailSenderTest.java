@@ -1,6 +1,6 @@
 package com.jjangsky.splearn.adapter.integration;
 
-import com.jjangsky.splearn.domain.Email;
+import com.jjangsky.splearn.domain.shared.Email;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.StdIo;
 import org.junitpioneer.jupiter.StdOut;

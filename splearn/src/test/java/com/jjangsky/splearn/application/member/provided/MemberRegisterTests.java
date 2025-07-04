@@ -1,7 +1,7 @@
-package com.jjangsky.splearn.application.provided;
+package com.jjangsky.splearn.application.member.provided;
 
 import com.jjangsky.splearn.SplearnTestConfiguration;
-import com.jjangsky.splearn.domain.*;
+import com.jjangsky.splearn.domain.member.*;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;

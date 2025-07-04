@@ -1,6 +1,7 @@
 package com.jjangsky.splearn.application.member.provided;
 
 import com.jjangsky.splearn.domain.member.Member;
+import com.jjangsky.splearn.domain.member.MemberInfoUpdateRequest;
 import com.jjangsky.splearn.domain.member.MemberRegisterRequest;
 import jakarta.validation.Valid;
 
@@ -18,5 +19,7 @@ public interface MemberRegister {
 
     Member activate(Long memberId);
 
+    Member deactivate(Long memberId);
 
+    Member updateInfo(Long memberId, @Valid MemberInfoUpdateRequest memberInfoUpdateRequest);
 }

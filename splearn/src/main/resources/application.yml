@@ -4,3 +4,9 @@ spring:
     show-sql: true
     hibernate:
         ddl-auto: update
+
+## 도커 컴포즈 옵션 - 서버 on/off 시 같이 내려가는 것이 아닌 항상 켜져있는 모드를 지원함
+  docker:
+    compose:
+      lifecycle-management: start_only
+

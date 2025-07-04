@@ -4,10 +4,7 @@ import com.jjangsky.splearn.application.member.provided.MemberFinder;
 import com.jjangsky.splearn.application.member.provided.MemberRegister;
 import com.jjangsky.splearn.application.member.required.EmailSender;
 import com.jjangsky.splearn.application.member.required.MemberRepository;
-import com.jjangsky.splearn.domain.member.DuplicateEmailException;
-import com.jjangsky.splearn.domain.member.Member;
-import com.jjangsky.splearn.domain.member.MemberRegisterRequest;
-import com.jjangsky.splearn.domain.member.PasswordEncoder;
+import com.jjangsky.splearn.domain.member.*;
 import com.jjangsky.splearn.domain.shared.Email;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -87,6 +84,24 @@ public class MemberModifyService implements MemberRegister {
          *                 .orElseThrow(() -> new IllegalArgumentException("Invalid member id: " + memberId));
          */
         member.activate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member deactivate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.deactivate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member updateInfo(Long memberId, MemberInfoUpdateRequest memberInfoUpdateRequest) {
+        Member member = memberFinder.find(memberId);
+
+        member.updateInfo(memberInfoUpdateRequest);
 
         return memberRepository.save(member);
     }

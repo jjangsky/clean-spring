@@ -94,6 +94,13 @@ record MemberRegisterTests(MemberRegister memberRegister, EntityManager entityMa
         return member;
     }
 
+    private Member registerMember(String email) {
+        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest(email));
+        entityManager.flush();
+        entityManager.clear();
+        return member;
+    }
+
 
     @Test
     void setMemberRegisterRequestFail() {
@@ -105,5 +112,23 @@ record MemberRegisterTests(MemberRegister memberRegister, EntityManager entityMa
     private void checkValidation(MemberRegisterRequest invalid) {
         assertThatThrownBy(() -> memberRegister.register(invalid))
                 .isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void updateInfoFail() {
+        Member member = registerMember();
+        memberRegister.activate(member.getId());
+        member = memberRegister.updateInfo(member.getId(),
+                new MemberInfoUpdateRequest("Peter", "toby100", "자기소개입니다."));
+
+        Member member2 = registerMember("toby2@splearn.app");
+        memberRegister.activate(member2.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThatThrownBy(() -> memberRegister.updateInfo(member2.getId(),
+                new MemberInfoUpdateRequest("James", "toby100", "자기소개입니다.")))
+                .isInstanceOf(DuplicateProfileException.class)
+                .hasMessageContaining("프로필 주소는 이미 사용중입니다.");
     }
 }

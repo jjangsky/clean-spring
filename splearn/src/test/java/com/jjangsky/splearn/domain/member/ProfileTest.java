@@ -26,7 +26,4 @@ class ProfileTest {
         var profile = new Profile("tobyilee");
         assertThat(profile.url()).isEqualTo("@tobyilee");
     }
-
-
-
 }

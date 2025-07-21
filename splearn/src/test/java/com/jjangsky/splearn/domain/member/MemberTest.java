@@ -135,4 +135,11 @@ class MemberTest {
         assertThat(member.getDetail().getIntroduction()).isEqualTo("newBio");
     }
 
+    @Test
+    void updateInfoFail() {
+        assertThatThrownBy(() -> {
+            member.updateInfo(new MemberInfoUpdateRequest("Leo", "toby100", "자기소개"));
+        }).isInstanceOf(IllegalStateException.class);
+    }
+
 }

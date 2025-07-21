@@ -11,7 +11,7 @@ public record Profile(String address) {
 
     public Profile {
         // record class를 사용하는 경우 생성자를 생성할때 따로 인자를 명시하지 않아도 됨
-        if (!PROFILE_ADDRESS_PATTERN.matcher(address).matches()) {
+        if (address == null || (!address.isEmpty() && !PROFILE_ADDRESS_PATTERN.matcher(address).matches())) {
             throw new IllegalArgumentException("프로필 주소 형식이 바르지 않습니다. " + address);
         }
 

@@ -6,11 +6,10 @@ import com.jjangsky.splearn.application.member.required.EmailSender;
 import com.jjangsky.splearn.application.member.required.MemberRepository;
 import com.jjangsky.splearn.domain.member.*;
 import com.jjangsky.splearn.domain.shared.Email;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -23,8 +22,8 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Transactional // AOP 기술을 활용하여 메소드가 시작 전 트랜잭션 시작하고, 종료 후 마무리함
-@RequiredArgsConstructor
 @Validated // -> 트랜잭션과 비슷하여 시작 전 파라미터 정보 확인 처리
+@RequiredArgsConstructor
 public class MemberModifyService implements MemberRegister {
 
     /**
